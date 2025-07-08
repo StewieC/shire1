@@ -1,12 +1,27 @@
 {
   "canisters": {
-    "shire1_backend": {
-      "main": "src/shire1_backend/main.mo",
+    "group_canister": {
+      "main": "src/shire1_backend/group.mo",
+      "type": "motoko"
+    },
+    "contribution_canister": {
+      "main": "src/shire1_backend/contribution.mo",
+      "type": "motoko"
+    },
+    "property_canister": {
+      "main": "src/shire1_backend/property.mo",
+      "type": "motoko"
+    },
+    "notifications_canister": {
+      "main": "src/shire1_backend/notifications.mo",
       "type": "motoko"
     },
     "shire1_frontend": {
       "dependencies": [
-        "shire1_backend"
+        "group_canister",
+        "contribution_canister",
+        "property_canister",
+        "notifications_canister"
       ],
       "source": [
         "src/shire1_frontend/dist"
