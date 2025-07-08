@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "shire1_backend": {
+      "main": "src/shire1_backend/main.mo",
+      "type": "motoko"
+    },
+    "shire1_frontend": {
+      "dependencies": [
+        "shire1_backend"
+      ],
+      "source": [
+        "src/shire1_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "shire1_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
