@@ -25,6 +25,11 @@ actor {
   private stable var nextGroupId: Nat = 0;
 
   public shared ({caller}) func createGroup(name: Text, members: [Member], contributionAmount: Nat) : async Nat {
+    // Explicitly use caller to avoid warning
+    let creator = caller; // Store caller to ensure compiler recognizes usage
+    if (Principal.isAnonymous(creator)) {
+      return 0; // Indicate failure for anonymous callers
+    };
     let group = {
       id = nextGroupId;
       name = name;
@@ -48,9 +53,19 @@ actor {
   };
 
   public shared ({caller}) func updatePayoutIndex(groupId: Nat) : async Bool {
+    // Explicitly use caller to avoid warning
+    let updater = caller; // Store caller to ensure compiler recognizes usage
+    if (Principal.isAnonymous(updater)) {
+      return false;
+    };
     switch (List.find(groups, func(g: Group) : Bool { g.id == groupId })) {
       case null { return false };
       case (?group) {
+        // Check if caller is a member
+        let isMember = Array.find<Member>(group.members, func(m) { m.principal == updater }) != null;
+        if (not isMember) {
+          return false;
+        };
         let updatedGroup = {
           id = group.id;
           name = group.name;
